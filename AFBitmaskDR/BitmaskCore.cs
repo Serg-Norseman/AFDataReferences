@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using OSIsoft.AF.Asset;
 
 namespace AFBitmaskDR
@@ -77,6 +78,12 @@ namespace AFBitmaskDR
         public static bool IsIntVal(object objVal)
         {
             return (objVal is Int64 || objVal is Int32 || objVal is Int16 || objVal is SByte || objVal is Byte);
+        }
+
+
+        public static bool IsIntVal(Type valType)
+        {
+            return (valType == typeof(Int64) || valType == typeof(Int32) || valType == typeof(Int16) || valType == typeof(SByte) || valType == typeof(Byte));
         }
 
 

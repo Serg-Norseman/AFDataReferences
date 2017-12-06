@@ -8,7 +8,7 @@ namespace AFBitmaskDR
 		private System.Windows.Forms.Button btnCancel;
 		private System.ComponentModel.Container components;
 		private System.Windows.Forms.Label lblAttribute;
-		private System.Windows.Forms.TextBox txtAttribute;
+		private System.Windows.Forms.ComboBox txtAttribute;
 		private BSLib.WinForms.Controls.EnumRadioBox rgbBits;
 
 		private void InitializeComponent()
@@ -16,8 +16,8 @@ namespace AFBitmaskDR
 		    this.btnOK = new System.Windows.Forms.Button();
 		    this.btnCancel = new System.Windows.Forms.Button();
 		    this.lblAttribute = new System.Windows.Forms.Label();
-		    this.txtAttribute = new System.Windows.Forms.TextBox();
 		    this.rgbBits = new BSLib.WinForms.Controls.EnumRadioBox();
+		    this.txtAttribute = new System.Windows.Forms.ComboBox();
 		    this.SuspendLayout();
 		    // 
 		    // btnOK
@@ -47,23 +47,24 @@ namespace AFBitmaskDR
 		    this.lblAttribute.TabIndex = 2;
 		    this.lblAttribute.Text = "Attribute";
 		    // 
-		    // txtAttribute
-		    // 
-		    this.txtAttribute.Location = new System.Drawing.Point(95, 6);
-		    this.txtAttribute.Name = "txtAttribute";
-		    this.txtAttribute.Size = new System.Drawing.Size(349, 22);
-		    this.txtAttribute.TabIndex = 7;
-		    // 
 		    // rgbBits
 		    // 
 		    this.rgbBits.EnumType = typeof(AFBitmaskDR.BitEnum);
 		    this.rgbBits.Location = new System.Drawing.Point(12, 45);
 		    this.rgbBits.Name = "rgbBits";
-		    this.rgbBits.Size = new System.Drawing.Size(529, 193);
+		    this.rgbBits.Size = new System.Drawing.Size(529, 194);
 		    this.rgbBits.TabIndex = 10;
 		    this.rgbBits.TabStop = false;
 		    this.rgbBits.Text = "Bit selection";
 		    this.rgbBits.Value = null;
+		    // 
+		    // txtAttribute
+		    // 
+		    this.txtAttribute.FormattingEnabled = true;
+		    this.txtAttribute.Location = new System.Drawing.Point(95, 6);
+		    this.txtAttribute.Name = "txtAttribute";
+		    this.txtAttribute.Size = new System.Drawing.Size(378, 24);
+		    this.txtAttribute.TabIndex = 11;
 		    // 
 		    // BitmaskDRConfig
 		    // 
@@ -71,11 +72,12 @@ namespace AFBitmaskDR
 		    this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
 		    this.CancelButton = this.btnCancel;
 		    this.ClientSize = new System.Drawing.Size(564, 298);
-		    this.Controls.Add(this.rgbBits);
 		    this.Controls.Add(this.txtAttribute);
+		    this.Controls.Add(this.rgbBits);
 		    this.Controls.Add(this.lblAttribute);
 		    this.Controls.Add(this.btnCancel);
 		    this.Controls.Add(this.btnOK);
+		    this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 		    this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 		    this.MaximizeBox = false;
 		    this.MinimizeBox = false;
@@ -85,7 +87,6 @@ namespace AFBitmaskDR
 		    this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 		    this.Text = "Bitmask Data Reference";
 		    this.ResumeLayout(false);
-		    this.PerformLayout();
 
 		}
 

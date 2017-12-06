@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using BSLib;
+using OSIsoft.AF.Asset;
 
 namespace AFBitmaskDR
 {
@@ -8,11 +9,32 @@ namespace AFBitmaskDR
     {
         private BitmaskDR dataReference;
 
+        private void ProcessAttributes(AFAttributes attributes, string prefix)
+        {
+            foreach (AFAttribute attr in attributes) {
+                if (attr == dataReference.Attribute) continue;
+
+                string attrName = prefix + "|" + attr.Name;
+
+                if (BitmaskCore.IsIntVal(attr.Type)) {
+                    txtAttribute.Items.Add(attrName);
+                }
+
+                ProcessAttributes(attr.Attributes, attrName);
+            }
+        }
+
         public BitmaskDRConfig(BitmaskDR dataReference, bool bReadOnly)
         {
             this.InitializeComponent();
 
             this.dataReference = dataReference;
+
+            AFElement elem = dataReference.Attribute.Element as AFElement;
+            if (elem != null) {
+                ProcessAttributes(elem.Attributes, "");
+            }
+
             if (bReadOnly) {
                 this.txtAttribute.Enabled = false;
                 this.rgbBits.Enabled = false;
