@@ -23,7 +23,7 @@ namespace AFBitmaskDR
 		    // btnOK
 		    // 
 		    this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-		    this.btnOK.Location = new System.Drawing.Point(366, 259);
+		    this.btnOK.Location = new System.Drawing.Point(366, 272);
 		    this.btnOK.Name = "btnOK";
 		    this.btnOK.Size = new System.Drawing.Size(90, 27);
 		    this.btnOK.TabIndex = 5;
@@ -33,7 +33,7 @@ namespace AFBitmaskDR
 		    // btnCancel
 		    // 
 		    this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-		    this.btnCancel.Location = new System.Drawing.Point(462, 259);
+		    this.btnCancel.Location = new System.Drawing.Point(462, 272);
 		    this.btnCancel.Name = "btnCancel";
 		    this.btnCancel.Size = new System.Drawing.Size(90, 27);
 		    this.btnCancel.TabIndex = 6;
@@ -52,7 +52,7 @@ namespace AFBitmaskDR
 		    this.rgbBits.EnumType = typeof(AFBitmaskDR.BitEnum);
 		    this.rgbBits.Location = new System.Drawing.Point(12, 45);
 		    this.rgbBits.Name = "rgbBits";
-		    this.rgbBits.Size = new System.Drawing.Size(529, 194);
+		    this.rgbBits.Size = new System.Drawing.Size(540, 211);
 		    this.rgbBits.TabIndex = 10;
 		    this.rgbBits.TabStop = false;
 		    this.rgbBits.Text = "Bit selection";
@@ -71,7 +71,7 @@ namespace AFBitmaskDR
 		    this.AcceptButton = this.btnOK;
 		    this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
 		    this.CancelButton = this.btnCancel;
-		    this.ClientSize = new System.Drawing.Size(564, 298);
+		    this.ClientSize = new System.Drawing.Size(564, 311);
 		    this.Controls.Add(this.txtAttribute);
 		    this.Controls.Add(this.rgbBits);
 		    this.Controls.Add(this.lblAttribute);

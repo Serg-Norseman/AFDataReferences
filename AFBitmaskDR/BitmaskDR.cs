@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using OSIsoft.AF.Asset;
+using OSIsoft.AF.Data;
 using OSIsoft.AF.Time;
 
 namespace AFBitmaskDR
@@ -63,6 +64,13 @@ namespace AFBitmaskDR
         {
             get {
                 return AFDataReferenceMethod.GetValue | AFDataReferenceMethod.GetValues;
+            }
+        }
+
+        public override AFDataMethods SupportedDataMethods
+        {
+            get {
+                return base.DefaultSupportedDataMethods;
             }
         }
 
@@ -224,8 +232,8 @@ namespace AFBitmaskDR
             object objVal = inVal.Value;
             if (inVal.IsGood && objVal != null) {
                 if (BitmaskCore.IsIntVal(objVal)) {
-                    int curVal = (int)BitmaskCore.ConvertToType(objVal, TypeCode.Int32);
-                    int tempVal = BitmaskCore.GetBit(curVal, bit);
+                    ulong curVal = (ulong)BitmaskCore.ConvertToType(objVal, TypeCode.UInt64);
+                    int tempVal = BitmaskCore.GetBit(curVal, (byte)bit);
                     return new AFValue(tempVal, this.Attribute.DefaultUOM);
                 } else {
                     throw new ArgumentException(Resources.ERR_SourceAttributeMustBeAnIntegerType);

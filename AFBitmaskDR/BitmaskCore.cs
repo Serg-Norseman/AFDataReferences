@@ -87,9 +87,9 @@ namespace AFBitmaskDR
         }
 
 
-        public static int GetBit(int val, int pos)
+        public static int GetBit(ulong val, byte pos)
         {
-            return ((val & (1 << pos)) != 0) ? 1 : 0;
+            return ((val & (1u << pos)) != 0) ? 1 : 0;
         }
 
 
