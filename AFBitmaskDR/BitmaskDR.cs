@@ -234,7 +234,7 @@ namespace AFBitmaskDR
                 if (BitmaskCore.IsIntVal(objVal)) {
                     ulong curVal = (ulong)BitmaskCore.ConvertToType(objVal, TypeCode.UInt64);
                     int tempVal = BitmaskCore.GetBit(curVal, (byte)bit);
-                    return new AFValue(tempVal, this.Attribute.DefaultUOM);
+                    return new AFValue(tempVal, inVal.Timestamp, this.Attribute.DefaultUOM);
                 } else {
                     throw new ArgumentException(Resources.ERR_SourceAttributeMustBeAnIntegerType);
                 }
