@@ -1,0 +1,12 @@
+**/.vs/
+/*.exe*
+/*.dll
+*.pdb
+*.mdb
+*.suo
+*.userprefs
+*.DotSettings.user
+
+**/[Bb]in/
+**/[Oo]bj/
+/temp/
