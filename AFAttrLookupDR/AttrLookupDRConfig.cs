@@ -23,15 +23,37 @@ namespace AFAttrLookupDR
             }
         }
 
+        private void ProcessAttributes(AFAttributeTemplates attributes, string prefix)
+        {
+            foreach (AFAttributeTemplate attr in attributes) {
+                string attrName = prefix + "|" + attr.Name;
+
+                //if (attr != dataReference.Attribute.Template) {
+                    if (Extensions.IsStringVal(attr.Type)) {
+                        txtAttribute.Items.Add(attrName);
+                    }
+                //}
+
+                ProcessAttributes(attr.AttributeTemplates, attrName);
+            }
+        }
+
         public AttrLookupDRConfig(AttrLookupDR dataReference, bool bReadOnly)
         {
             this.InitializeComponent();
 
             this.dataReference = dataReference;
 
-            AFElement elem = dataReference.Attribute.Element as AFElement;
-            if (elem != null) {
-                ProcessAttributes(elem.Attributes, "");
+            if (dataReference.Attribute != null) {
+                AFElement elem = dataReference.Attribute.Element as AFElement;
+                if (elem != null) {
+                    ProcessAttributes(elem.Attributes, "");
+                }
+            } else if (dataReference.Template != null) {
+                AFElementTemplate templ = dataReference.Template.ElementTemplate as AFElementTemplate;
+                if (templ != null) {
+                    ProcessAttributes(templ.AttributeTemplates, "");
+                }
             }
 
             if (bReadOnly) {
