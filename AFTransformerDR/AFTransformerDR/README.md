@@ -1,3 +1,0 @@
-# AFTransformerDR
-
-Datareference.
