@@ -16,6 +16,16 @@ namespace AFAttrLookupDR
             return (valType == typeof(String));
         }
 
+        public static bool IsDateTimeVal(object objVal)
+        {
+            return (objVal is DateTime);
+        }
+
+        public static bool IsDateTimeVal(Type valType)
+        {
+            return (valType == typeof(DateTime));
+        }
+
         public static AFValue CreateBadValue(this AFAttribute attribute, AFTime time)
         {
             return AFValue.CreateSystemStateValue(attribute, AFSystemStateCode.NoResult, time);
