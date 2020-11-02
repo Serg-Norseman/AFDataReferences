@@ -370,9 +370,9 @@ namespace AFAttrLookupDR
             AFValue inVal;
 
             if (Method == "DirectLinkAndTS") {
-                if (TimestampType == "Attribute" && inputValues.Count > 1) {
-                    AFTime tsTime;
+                AFTime tsTime;
 
+                if (TimestampType == "Attribute" && inputValues.Count > 1) {
                     AFValue tsVal = inputValues[1];
                     object objVal = tsVal.Value;
                     if (objVal != null) {
@@ -384,21 +384,24 @@ namespace AFAttrLookupDR
                     } else {
                         throw new ApplicationException("Timestamp value is null");
                     }
-
-                    inVal = inputAttributes[0].GetValue(tsTime);
                 } else {
-                    AFTime tsTime = time;
-                    inVal = inputAttributes[0].GetValue(tsTime);
+                    tsTime = time;
                 }
+
+                inVal = inputAttributes[0].GetValue(tsTime);
             } else {
-                inVal = inputValues[0];
+                inVal = inputAttributes[0].GetValue(time);
+                //inVal = inputValues[0];
             }
 
-            if (inVal.IsGood) {
+            return new AFValue(inVal.Value, inVal.Timestamp, this.Attribute.DefaultUOM);
+            //return inVal;
+
+            /*if (inVal.IsGood) {
                 return inVal;
             } else {
                 return AFValue.CreateSystemStateValue(Attribute, AFSystemStateCode.BadInput, inVal.Timestamp);
-            }
+            }*/
         }
     }
 }
