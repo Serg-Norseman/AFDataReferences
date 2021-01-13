@@ -107,7 +107,7 @@ namespace AFAttrLookupDR
             bool result;
             
             try {
-                fDataReference.MethodType = (MethodType)cmbMethod.SelectedIndex;
+                fDataReference.MethodType = (RefAttributeType)cmbMethod.SelectedIndex;
 
                 fDataReference.AttributeName = txtAttribute.Text;
 

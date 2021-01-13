@@ -10,3 +10,8 @@ Datareference, which performs bit extraction from a SCADA-tag containing a bit s
 
 # AFTransformerDR
 
+
+# Debugging
+
+For correct debugging of any CDRs, it is extremely important to change the version number of assembly 
+after each group of changes - in order to correctly update the AF plugin cache (ProgramData\OSIsoft\AF\PlugIns).

@@ -2,16 +2,16 @@
 
 namespace AFAttrLookupDR
 {
-	internal partial class AttrLookupDRConfig
-	{
-		private System.Windows.Forms.Button btnOK;
-		private System.Windows.Forms.Button btnCancel;
-		private System.ComponentModel.Container components;
-		private System.Windows.Forms.Label lblAttribute;
-		private System.Windows.Forms.ComboBox txtAttribute;
+    internal partial class AttrLookupDRConfig
+    {
+        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnCancel;
+        private System.ComponentModel.Container components;
+        private System.Windows.Forms.Label lblAttribute;
+        private System.Windows.Forms.ComboBox txtAttribute;
 
-		private void InitializeComponent()
-		{
+        private void InitializeComponent()
+        {
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblAttribute = new System.Windows.Forms.Label();
@@ -162,16 +162,15 @@ namespace AFAttrLookupDR
             this.grpTimestamp.PerformLayout();
             this.ResumeLayout(false);
 
-		}
+        }
 
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && this.components != null)
-			{
-				this.components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && this.components != null) {
+                this.components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbTSAttr;
