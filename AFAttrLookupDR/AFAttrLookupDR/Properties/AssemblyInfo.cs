@@ -11,11 +11,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("PI Analysis Framework")]
 [assembly: AssemblyCopyright("Copyright © 2019-2021 Sergey V. Zhdanovskih")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("1.0.0.5")]
+[assembly: AssemblyVersion("1.1.0.0")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]
 
 [assembly: Guid("5A9CB4A4-C109-4390-AD98-2EA0A2CB644F")]
 [assembly: Debuggable(DebuggableAttribute.DebuggingModes.Default | DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]

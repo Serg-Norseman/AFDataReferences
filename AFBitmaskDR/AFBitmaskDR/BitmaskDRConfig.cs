@@ -24,15 +24,38 @@ namespace AFBitmaskDR
             }
         }
 
+        private void ProcessAttributes(AFAttributeTemplates attributes, string prefix)
+        {
+            foreach (AFAttributeTemplate attr in attributes) {
+                if (attr == dataReference.Attribute)
+                    continue;
+
+                string attrName = prefix + "|" + attr.Name;
+
+                if (BitmaskCore.IsIntVal(attr.Type)) {
+                    txtAttribute.Items.Add(attrName);
+                }
+
+                ProcessAttributes(attr.AttributeTemplates, attrName);
+            }
+        }
+
         public BitmaskDRConfig(BitmaskDR dataReference, bool bReadOnly)
         {
             this.InitializeComponent();
 
             this.dataReference = dataReference;
 
-            AFElement elem = dataReference.Attribute.Element as AFElement;
-            if (elem != null) {
-                ProcessAttributes(elem.Attributes, "");
+            if (dataReference.Attribute != null) {
+                AFElement elem = dataReference.Attribute.Element as AFElement;
+                if (elem != null) {
+                    ProcessAttributes(elem.Attributes, "");
+                }
+            } else if (dataReference.Template != null) {
+                AFElementTemplate templ = dataReference.Template.ElementTemplate as AFElementTemplate;
+                if (templ != null) {
+                    ProcessAttributes(templ.AttributeTemplates, "");
+                }
             }
 
             if (bReadOnly) {

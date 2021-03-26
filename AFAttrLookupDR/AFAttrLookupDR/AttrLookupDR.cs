@@ -1,11 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Text;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.Data;
-using OSIsoft.AF.EventFrame;
 using OSIsoft.AF.Time;
 
 namespace AFAttrLookupDR
@@ -21,8 +19,8 @@ namespace AFAttrLookupDR
     {
         private string fAttributeName;
         private bool fChecked;
-        private DateTime fLastLoadAttribute = DateTime.UtcNow;
-        private AFAttributeList fParamAttributes;
+        //private DateTime fLastLoadAttribute = DateTime.UtcNow;
+        //private AFAttributeList fParamAttributes;
         private string fRefAttrType;
         private string fTimestampSource;
         private string fTimestampType;
@@ -59,7 +57,9 @@ namespace AFAttrLookupDR
                     if (fRefAttrType != null) {
                         fRefAttrType = fRefAttrType.Trim();
                     }
+
                     base.SaveConfigChanges();
+                    UnloadParameters();
                 }
             }
         }
@@ -90,7 +90,6 @@ namespace AFAttrLookupDR
             }
         }
 
-
         [Category("Configuration"), DefaultValue(""), Description("Source of timestamp of value")]
         public string TimestampSource
         {
@@ -103,7 +102,9 @@ namespace AFAttrLookupDR
                     if (fTimestampSource != null) {
                         fTimestampSource = fTimestampSource.Trim();
                     }
+
                     base.SaveConfigChanges();
+                    UnloadParameters();
                 }
             }
         }
@@ -120,7 +121,9 @@ namespace AFAttrLookupDR
                     if (fTimestampType != null) {
                         fTimestampType = fTimestampType.Trim();
                     }
+
                     base.SaveConfigChanges();
+                    UnloadParameters();
                 }
             }
         }
@@ -143,13 +146,6 @@ namespace AFAttrLookupDR
         {
             get {
                 return base.DefaultSupportedDataMethods;
-            }
-        }
-
-        public override bool Step
-        {
-            get {
-                return false;
             }
         }
 
@@ -216,6 +212,7 @@ namespace AFAttrLookupDR
                             }
                         }
                     }
+
                     base.SaveConfigChanges();
                     UnloadParameters();
                 }
@@ -246,19 +243,19 @@ namespace AFAttrLookupDR
 
         private void UnloadParameters()
         {
-            fParamAttributes = null;
+            //fParamAttributes = null;
             fChecked = false;
         }
 
-        private void LoadParameters()
+        private AFAttributeList LoadParameters()
         {
             if (Attribute == null || Attribute.Element == null) {
-                return;
+                throw new ApplicationException("Attribute and/or element is null");
             }
 
-            if (!string.IsNullOrEmpty(AttributeName)) {
-                fParamAttributes = new AFAttributeList();
+            var paramAttributes = new AFAttributeList();
 
+            if (!string.IsNullOrEmpty(AttributeName)) {
                 AFDatabase db = Attribute.Database;
                 if (db == null) {
                     throw new ApplicationException("No database found");
@@ -286,7 +283,7 @@ namespace AFAttrLookupDR
                             if (lookupAttr == null) {
                                 throw new ArgumentException(string.Format(Resources.ERR_AttributeLookupHasNotBeenFound, attrName));
                             } else {
-                                fParamAttributes.Add(lookupAttr);
+                                paramAttributes.Add(lookupAttr);
                             }
                         } else {
                             throw new ApplicationException(Resources.ERR_SourceAttributeMustBeStringType);
@@ -295,7 +292,7 @@ namespace AFAttrLookupDR
                         throw new ApplicationException(string.Format(Resources.ERR_UnrecognizedRefValue, "null or bad", AttributeName));
                     }
                 } else {
-                    fParamAttributes.Add(refAttr);
+                    paramAttributes.Add(refAttr);
                 }
 
                 if (TimestampType == "Attribute") {
@@ -303,31 +300,24 @@ namespace AFAttrLookupDR
                     if (tsAttr == null) {
                         throw new ApplicationException(string.Format(Resources.ERR_AttributeHasNotBeenFound, TimestampSource));
                     }
-                    fParamAttributes.Add(tsAttr);
+                    paramAttributes.Add(tsAttr);
                 }
 
-                fLastLoadAttribute = DateTime.UtcNow;
+                //fLastLoadAttribute = DateTime.UtcNow;
+            } else {
+                throw new ApplicationException("Name of lookup attribute is null or empty");
             }
+
+            return paramAttributes;
         }
 
         public override AFAttributeList GetInputs(object context)
         {
-            if (DateTime.UtcNow.Subtract(fLastLoadAttribute).Seconds > 10 || fParamAttributes == null) {
+            /*if (DateTime.UtcNow.Subtract(fLastLoadAttribute).Seconds > 10 || fParamAttributes == null) {
                 LoadParameters();
-            }
-            return fParamAttributes;
-        }
-
-        private AFTime ToAFTime(object timeContext)
-        {
-            if (timeContext is AFTime) {
-                return (AFTime)timeContext;
-            } else if (timeContext is AFTimeRange) {
-                var timeRange = (AFTimeRange)timeContext;
-                return (Attribute.Element is AFEventFrame) ? timeRange.StartTime : timeRange.EndTime;
-            }
-
-            return AFTime.NowInWholeSeconds;
+            }*/
+            var paramAttributes = LoadParameters();
+            return paramAttributes;
         }
 
         public override AFValue GetValue(object context, object timeContext, AFAttributeList inputAttributes, AFValues inputValues)
@@ -340,21 +330,27 @@ namespace AFAttrLookupDR
                 // Important to note that the order of inputValues matches the order of inputAttributes.
                 // Note that timeContext is an object. 
                 // We need to examine it further in order to resolve it to an AFTime.
-                var time = ToAFTime(timeContext);
+                var time = Extensions.ToAFTime(Attribute.Element, timeContext);
 
-                AFValue result;
-                result = Calculate(time, inputAttributes, inputValues);
+                AFValue result = Calculate(time, inputAttributes, inputValues);
                 return result;
             } catch (Exception) {
                 UnloadParameters();
-                fChecked = false;
                 throw;
             }
         }
 
         private AFValue Calculate(AFTime time, AFAttributeList inputAttributes, AFValues inputValues)
         {
-            if (inputValues.Count == 0) {
+            if (time == null) {
+                throw new ArgumentException("No timestamp");
+            }
+
+            if (inputAttributes == null || inputAttributes.Count == 0) {
+                throw new ArgumentException("No input attributes");
+            }
+
+            if (inputValues == null || inputValues.Count == 0) {
                 throw new ArgumentException(Resources.ERR_NoInputValues);
             }
 
@@ -372,27 +368,28 @@ namespace AFAttrLookupDR
                         throw new ApplicationException("Timestamp value is null");
                     }
                 } else {
-                    throw new ApplicationException("Insufficient input values");
+                    throw new ApplicationException(string.Format("Input value not found (#{0}", 2));
                 }
             }
 
-            AFValue inVal = inputAttributes[0].GetValue(time);
+            AFValue inVal;
+            if (inputAttributes.Count > 0) {
+                inVal = inputAttributes[0].GetValue(time);
 
-            return new AFValue(base.Attribute, inVal.Value, inVal.Timestamp, this.Attribute.DefaultUOM);
-        }
-
-        public override string GetToolTip()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("Attribute Lookup CDR tooltip:\n");
-            if (fParamAttributes != null && fParamAttributes.Count > 0) {
-                foreach (var param in fParamAttributes) {
-                    stringBuilder.Append("  Parameter attribute: ");
-                    stringBuilder.Append(param.GetPath());
-                    stringBuilder.Append("\n");
+                if (inVal == null) {
+                    throw new ApplicationException("Input value is null");
+                } else {
+                    AFEnumerationValue enumValue = inVal.Value as AFEnumerationValue;
+                    if (enumValue != null && enumValue.Value == 248) {
+                        // Attempting to handle an error when the output value is 248 instead of the NoData state
+                        return AFValue.CreateSystemStateValue(this.Attribute, AFSystemStateCode.NoData, time);
+                    } else {
+                        return new AFValue(this.Attribute, inVal.Value, inVal.Timestamp, this.Attribute.DefaultUOM);
+                    }
                 }
+            } else {
+                throw new ApplicationException(string.Format("Input attribute not found (#{0}", 1));
             }
-            return stringBuilder.ToString();
         }
     }
 }
