@@ -10,6 +10,9 @@ Datareference, which performs bit extraction from a SCADA-tag containing a bit s
 
 # AFTransformerDR
 
+# AFCalibLookupDR (AF Calibration Lookup DataReference)
+
+A data reference that lookups for values using a calibration table.
 
 # Debugging
 
